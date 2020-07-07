@@ -1,4 +1,4 @@
-package com.demo.lifecycle;
+package com.demo.lifecycle.processors;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;

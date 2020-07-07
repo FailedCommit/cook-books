@@ -1,8 +1,7 @@
 package com.demo.lifecycle;
 
 import com.demo.lifecycle.beans.SpringBean1;
-import com.demo.lifecycle.beans.SpringBean2;
-import com.demo.lifecycle.beans.SpringBean3;
+import com.demo.lifecycle.config.ApplicationConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Runner {

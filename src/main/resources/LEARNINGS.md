@@ -53,9 +53,34 @@ on a POJO’s purpose (e.g., @Repository causes exceptions to be wrapped up as D
 3c. Destruction callbacks are invoked.``
         -- Bean is destroyed:
                 -- @PreDestroy method gets called
-                -- DisposableBean :: destro method gets called
+                -- DisposableBean :: destroy method gets called
                 -- @Bean(destroyMethod) gets called
 </pre>
+
+NOTE: For a list of all bean lifecycle methods, see the BeanFactory.java javadocs.
+
+#### Moving ApplicationConfiguration to config folder
+
+Error: `Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException:
+No qualifying bean of type 'com.demo.lifecycle.beans.SpringBean2' available:
+expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}`
+
+Reason: Moving ApplicationConfiguration to config folder messed up the component scan.
+Since, ApplicationConfiguration class was annotated with `@ComponentScan`, by default it scanned only the containing
+package and its sub-packages. Hence, completely ignoring SpringBean2 and SpringBean3.
+
+Since, the application crashed while trying to resolve SpringBean2 hence in error SpringBean3 is not there.
+If we comment out SpringBean2, the code will indeed complain for missing SpringBean3.
+
+Fix: Annotate ApplicationConfiguration with `@ComponentScan(basePackages = "com.demo.lifecycle.beans")`
+An explicit path needs to be specified where spring should look. Now, Spring will look at specifid path and all its sub-packages.
+
+NOTE: We never got `org.springframework.beans.factory.NoSuchBeanDefinitionException:
+No qualifying bean of type 'com.demo.lifecycle.beans.SpringBean1'`
+
+because to illustrate _not-so-common_ user specified initMethod and destroyMethods,
+we had explicitely created SpringBean1 in the ApplicationConfiguration class. 
+
 
 #### Questions 
 1. What is the usage of @ComponenScan and @Confguration? Can they be used as replacements of each other?

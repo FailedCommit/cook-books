@@ -1,11 +1,18 @@
-package com.demo.lifecycle;
+package com.demo.lifecycle.config;
 
+import com.demo.lifecycle.processors.CustomBeanFactoryPostProcessor;
+import com.demo.lifecycle.processors.CustomBeanPostProcessor;
 import com.demo.lifecycle.beans.SpringBean1;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
-@ComponentScan
+/**
+ * For a list of all bean lifecycle methods, see the
+ * {@link BeanFactory BeanFactory javadocs}.
+ */
+// Moving ApplicationConfiguration to config folder messed up the component scan. See readme for more details.
+@ComponentScan(basePackages = "com.demo.lifecycle.beans")
 public class ApplicationConfiguration {
   @Bean
   public static CustomBeanFactoryPostProcessor getCustomBeanFactoryPostProcessor() {
