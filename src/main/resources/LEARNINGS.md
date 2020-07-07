@@ -24,13 +24,13 @@ on a POJO’s purpose (e.g., @Repository causes exceptions to be wrapped up as D
 #07 July 2020
 
 
-#### Spring container life-cycle:
+#### Spring `container` & `bean` life-cycle:
 1. Spring internals - initialization
 2. Application Runs
 3. Spring internals - destruction
 
-
-1a. Application is Started
+<pre>
+1a. Application is Starting
 1b. Spring container is created
 1c. Container reads configuration
 1d. Beans get created
@@ -40,14 +40,22 @@ on a POJO’s purpose (e.g., @Repository causes exceptions to be wrapped up as D
         -- Spring beans are configured and assembeled
                 - resolve property values
                 - inject dependencies
-        -- BeanPostProcessors get called
+        -- BeanPostProcessors :: postProcessorBeforeInitialization gets called
+        -- @PostConstruct method gets called
+        -- InitializingBean :: afterPropertiesSet method gets called
+        -- @Bean(initMethod) method gets called
+        -- BeanPostProcessor :: postProcessAfterInitialization gets called
         
-2.
+2. Application Runs - Bean is ready to use
 
-3a. Application gets shutdown
+3a. Application getting shutdown
 3b. Spring context gets Closed
 3c. Destruction callbacks are invoked.``
-
+        -- Bean is destroyed:
+                -- @PreDestroy method gets called
+                -- DisposableBean :: destro method gets called
+                -- @Bean(destroyMethod) gets called
+</pre>
 
 #### Questions 
 1. What is the usage of @ComponenScan and @Confguration? Can they be used as replacements of each other?

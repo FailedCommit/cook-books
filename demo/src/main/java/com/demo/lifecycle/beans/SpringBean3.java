@@ -11,6 +11,10 @@ public class SpringBean3 {
         System.out.println(getClass().getSimpleName() + "::constructor");
     }
 
+    public void sayHello() {
+        System.out.println("\nHello :: SpringBean3\n");
+    }
+
     @PostConstruct
     public void init() {
         System.out.println(getClass().getSimpleName() + "::init");
