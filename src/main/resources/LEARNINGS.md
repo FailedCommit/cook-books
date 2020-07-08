@@ -82,16 +82,90 @@ because to illustrate _not-so-common_ user specified initMethod and destroyMetho
 we had explicitely created SpringBean1 in the ApplicationConfiguration class. 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #### Questions 
-1. What is the usage of @ComponenScan and @Confguration? Can they be used as replacements of each other?
+1. What is the usage of @ComponentScan and @Confguration? Can they be used as replacements of each other?
+
+    `@Configuration` indicates that the annotated class contains all the configuration ofr creating beans,
+     implementing security and key information to conect to the data-base.
+    `@ComponentScan` tells Spring where to look for beans. 
+    
+    These two annotations are used together but if all your bean definitions are already in your configuration file itself
+    then you can live with omitting @componentScan annotation.
+    
+    To further underline the above explaination, 
+    In spring boot we use @SpringBootApplication annotation which is ultimately the combiation of 3 annotations:
+    `@Configuration`
+    `@ComponentScan`
+    `@EnableAutoConfiguration`
+    
+2. What are the key steps to be able to write test cases in Spring?
+
+    1. Add spring-test dependency - `implementation 'org.springframework:spring-test:5.0.4.RELEASE'`
+    2. Annotate your test case with:
+        1. @RunWith(SpringRunner.class)
+        2. ContextConfiguration(classes = ApplicationConfigration.class) - _ApplicationConfigration.java is where my configs reside_
+   
+3. What are stereotypes in Spring? Can't I just annotate everything with `@Component` and keep life simple?
+
+    `Stereotypes` - are annotations applied to classes to describe the role that will be performed by this class. 
+    Spring discovered clases annotated by stereotypes and creates bean definitions based on those types.
+    
+    Types of Stereotypes:
+    
+    1. `Component` - for generic components in the system, root stereotype, candidate for auto-scanning.
+    2. `Service` - for classes that contain business logic.
+    3. `Repository` - for classes that are data repositories (used for DAO, persistence)
+    4. `Controller` - for classes that are controllers, usually a web controller (used with `@RequestMapping`)
+    
+    ---- pending answer ------
 
 
+4. What are various bean scopes? 
 
+    1. `Singleton` - default. 
+    2. `Prototype` -
+    3. `Request` -
+    4. `Session` -
+    5. `Application` -
+    6. `Websocket` -
+    
+    usage - 
+    `@scope("prototype")`, `@RequestScope`, `@SessionScope`, `@ApplicationScope`.
+    For singleton you can use `@scope("singleton")` if you want to make it explicit or no annotation means singleton as it is the default scope.
+    
+    Official reference on BenaScopes: https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-factory-scopes
 
+    NOTE: 
+    The `request`, `session`, `application`, and `websocket` scopes are available only if you use a web-aware Spring ApplicationContext implementation (such as XmlWebApplicationContext). If you use these scopes with regular Spring IoC containers, such as the ClassPathXmlApplicationContext, an IllegalStateException that complains about an unknown bean scope is thrown.
 
+5. Are beans instantiated Lazily or Eagerly? How can we control this behavior?
 
-
-
+    Singleton beans are instantiated eagerly.
+    Prototype beans are instantiated lazily.
+    
+    Altering Behavior:
+    
+    1. For all beans in the application - `@ComponentScan(lazyInit = true)`, default value of lazyInit is false.
+    2. For individual beans - Annotate specific bean with `@Lazy`. Default value is true, to force eager instantiation use `@Lazy(false)`
+    3. Annotate a configuration class (annotated with @Configuration) with @Lazy to have global effect.
+     
+    
+    
+    
 
 
 
