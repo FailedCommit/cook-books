@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 /**
  * A bean to illustrate the concept of property sources.
+ *
+ * @see org.springframework.context.support.PropertySourcesPlaceholderConfigurer
+ * @see org.springframework.core.env.PropertySourcesPropertyResolver
  */
 @Component
 public class PropertySourceBean {
