@@ -81,9 +81,59 @@ No qualifying bean of type 'com.demo.lifecycle.beans.SpringBean1'`
 because to illustrate _not-so-common_ user specified initMethod and destroyMethods,
 we had explicitely created SpringBean1 in the ApplicationConfiguration class. 
 
+##Annotations and their processors
 
 
 
+`@Autowired`                              - processed by AutowiredAnnotationBeanPostProcessor
+
+`@Value  `                                - processed by
+ 
+`@ComponentScan`
+
+`@Component`
+
+`@Configuration`
+
+
+
+#08 July 2020
+
+
+#### Proxies
+
+Spring framework supports two kinds of proxies:
+1. JDK Dynamic Proxy - used by default if target object implements interface
+2. CGLIB Proxy - used when target does not implement any interface.
+
+Limitations of JDK Dynamic Proxy:
+
+1. Requires proxy object to implement the interface
+2. Only interface method will be proxied
+3. No support for self-invocation - 
+
+        Example: A class invoking its own method. Imagine a class with two methods 
+            1. save()
+            2. find()
+        if find() calls save(), then it is called self-invocation. 
+
+Limitations of CGLIB Proxy:
+
+1. Does not work for final classes
+2. Does not work for final methods
+3. No support for self-invocation
+
+Advantages of Proxies:
+
+1. Ability to change behavior of existing beans without changing original code
+2. Separation of concerns (logging, transactions, security...)
+
+Disadvantages of Proxies:
+
+1. Code becomes hard to debug. coz on the surface it looks like you are invoking the real object but in reality the proxy get invoked
+2. Needs to use unchecked exception for exceptions not declared in original method
+3. May cause performance issues if before/after section in proxy code is using IO (N/W or Disk)
+4. May cause unexpected equals (==) results as Proxy object and proxied object are two different objects.
 
 
 
@@ -163,12 +213,23 @@ we had explicitely created SpringBean1 in the ApplicationConfiguration class.
     2. For individual beans - Annotate specific bean with `@Lazy`. Default value is true, to force eager instantiation use `@Lazy(false)`
     3. Annotate a configuration class (annotated with @Configuration) with @Lazy to have global effect.
      
+6. How `@Autowire` resolves dependencies?
+
+    1. Match exactly by type, if only one found, finish.
+    2. If multiple beans of same type are found, check if anyone contains `@Primary` annotation, if yes,
+        inject primary bean and finish.
+    3. If no exact match exists, check if `@Qualifier` exists for field and use that to resolve.
+    4. If still no exact match found, narrow the search by using bean name.
+    5. If still no exact match found, throw exception:
+            `NoSuchBeanDefntionException` - if no bean found.
+            `NoUniqueBeanDefinitionException` - if more than one bean found.
     
-    
-    
+    If there is only one constructor, then in case of constructor injection you don't need to annotate the constructor 
+    with @Autowired, but in case of multiple constructors you must annotate at least one constructor else Spring will
+    throw `NoSuchMethodException`.
 
 
-
+7. 
 
 
 
