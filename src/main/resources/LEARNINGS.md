@@ -136,6 +136,42 @@ Disadvantages of Proxies:
 4. May cause unexpected equals (==) results as Proxy object and proxied object are two different objects.
 
 
+#### Profiles
+
+Spring Profiles provide a way to segregate parts of your application configuration and make it only available in certain environments.
+
+Spring Profiles are configured by:
+
+1. Specifying which beans are part of which profiles
+2. Specifying which profiles are active
+
+##### You can specify beans being part of profile in following ways:
+
+1. Use `@Profile` annotation at `@Component` class level
+        - bean will be part of profile(s) specified in the annotation
+2. Use `@Profile` annotation at `@Configuration` class level
+        - all beans from this configuration will be part of prfile(s) specified in the annotation
+3. Use `@Profile` annotation at `@Bean` method of `@Configuration` class
+        - instance of bean returned by this method will be part of profile(s) specified in the annotation
+4. Use `@Profile` annotation to define custom annotation
+        - `@Component` or `@Configuration` or `@Bean` method annotated with this custom anotation will be part of
+           profile(s) in the annotation
+           
+           
+`If bean does not have profile specified in any way, it will be created in every profile.
+ You can use `!` to specify in which profile bean should not be created.`
+ 
+#####  You can activate profiles in following ways:
+ 
+1. Programmatically with usage of `ConfigurableEnvironment`
+2. By using `spring.profiles.active` property
+3. On JUnit Test level by using `@ActiveProfiles` annotation
+4. In Spring Boot, programmatically by usage of `SpringApplicationBuilder`
+5. In Spring Boot by `application.properties` or `application.yml` file
+
+
+
+
 
 
 
