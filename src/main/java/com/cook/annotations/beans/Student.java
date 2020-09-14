@@ -17,7 +17,7 @@ public class Student {
     private String lastName;
 
     @JsonElement(key = "studentAge")
-    private double age;
+    private Double age;
 
     /**
      * Ensures that firstName and lastName starts with Uppercase and rest is all Lowercase.
@@ -27,6 +27,6 @@ public class Student {
         this.firstName = this.firstName.substring(0, 1).toUpperCase() +
                 this.firstName.substring(1).toLowerCase();
         this.lastName = this.lastName.substring(0, 1).toUpperCase() +
-                this.lastName.substring(1).toUpperCase();
+                this.lastName.substring(1).toLowerCase();
     }
 }

@@ -54,7 +54,7 @@ public class Serializer {
         for(Field field : clazz.getDeclaredFields()) {
             field.setAccessible(true);
             if(field.isAnnotationPresent(JsonElement.class)) {
-                elemMap.put(getKey(field), (String) field.get(obj));
+                elemMap.put(getKey(field), getStringValue(field, obj));
             }
         }
         String jsonString = elemMap.entrySet()
@@ -62,6 +62,14 @@ public class Serializer {
                 .map(entry -> "\"" + entry.getKey() + "\":\"" + entry.getValue() + "\"")
                 .collect(Collectors.joining(","));
         return "{" + jsonString + "}";
+    }
+
+    private String getStringValue(Field field, Object obj) throws IllegalAccessException {
+        final Object val = field.get(obj);
+        if(isNull(val)) {
+            throw new RuntimeException("Can't serialize field " + getKey(field) + " with null value");
+        }
+        return val.toString();
     }
 
     private String getKey(Field field) {
