@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'idea'
+    id "com.google.protobuf" version "0.9.1"
 }
 
 group 'org.cook'
@@ -11,11 +13,18 @@ repositories {
     maven { url "https://repo.spring.io/release" }
 }
 
+// Place the generate Java files from proto in a specified folder
+protobuf {
+    generatedFilesBaseDir = "$projectDir/src"
+}
+
 test {
     useJUnitPlatform()
 }
 
 dependencies {
+    implementation 'com.google.protobuf:protobuf-java:3.21.10'
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 
